@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mobile Price Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Mobile Price Predictor</h2>
+    <form action="/predict" method="post">
+
+      {% set features = [
+        ('battery_power', 'Battery Power (mAh)'),
+        ('blue', 'Bluetooth'),
+        ('clock_speed', 'Clock Speed (GHz)'),
+        ('dual_sim', 'Dual SIM'),
+        ('fc', 'Front Camera (MP)'),
+        ('four_g', '4G'),
+        ('int_memory', 'Internal Memory (GB)'),
+        ('m_dep', 'Mobile Depth (cm)'),
+        ('mobile_wt', 'Mobile Weight (g)'),
+        ('n_cores', 'Number of Cores'),
+        ('pc', 'Primary Camera (MP)'),
+        ('px_height', 'Pixel Height'),
+        ('px_width', 'Pixel Width'),
+        ('ram', 'RAM (MB)'),
+        ('sc_h', 'Screen Height (cm)'),
+        ('sc_w', 'Screen Width (cm)'),
+        ('talk_time', 'Talk Time (hrs)'),
+        ('three_g', '3G'),
+        ('touch_screen', 'Touch Screen'),
+        ('wifi', 'WiFi')
+      ] %}
+
+      {% for name, label in features %}
+        <div class="input-group">
+          <label for="{{ name }}">{{ label }}:</label>
+          {% if name in ['blue', 'dual_sim', 'four_g', 'three_g', 'touch_screen', 'wifi'] %}
+            <select name="{{ name }}" required>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+          {% else %}
+            <input type="number" step="any" name="{{ name }}" required>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+      <h3>{{ prediction_text }}</h3>
+    {% endif %}
+  </div>
+
+</body>
+</html>
